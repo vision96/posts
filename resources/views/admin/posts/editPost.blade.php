@@ -6,193 +6,70 @@
       <!-- general form elements -->
       <div class="card card-primary">
         <div class="card-header">
-          <h3 class="card-title">Edit Product</h3>
+          <h3 class="card-title">Edit Post</h3>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
 
-        
-@include('admin.includes.alerts.success')
-@include('admin.includes.alerts.error')
-    
-
-        <form id="productForm" class="form" action="" method="POST"
+        <form id="editPostForm" class="form" action="" method="POST"
         enctype="multipart/form-data">
           @csrf
           <div class="card-body">
-       <div class="form-group">
 
-        <div class="form-group">
-            <label for="exampleInput1">Name</label>
-            <input type="text" class="form-control" name="name"  id="exampleInput1" value="{{$data->name}}" placeholder="Enter name">
+          <div class="form-group">
+            <label for="exampleInput1">Title</label>
+            <input type="text" class="form-control" name="title"  id="exampleInput1" value="" placeholder="Enter title">
           </div>
 
           <div class="form-group">
-            <label>Description</label>
-            <textarea class="form-control" rows="3" name="description" placeholder="Enter ...">{{$data->description}}</textarea>
+            <label>Body</label>
+            <textarea class="form-control" rows="3" name="body" placeholder="Enter ..."></textarea>
           </div> 
 
-     
-          <div class="form-group">
-            <label for="exampleInput2">Price</label>
-            <input type="text" class="form-control" name="price"  id="exampleInput2" value="{{$data->price}}" placeholder="price">
-          </div>
-
-
-          {{--  --}}
           <div class="row">
-            <div class="col-md-4">
-        <div class="form-group">
-          <label for="exampleInput3">Discount Value</label>
-          <input type="text" class="form-control" name="discount"  id="exampleInput3" value="{{$data->discount}}" placeholder="Enter discount value">
-        </div>
-      </div>
 
-      <div class="col-md-4">
-        <div class="form-group"> <!-- Date input -->
-        <label class="control-label" for="date">From</label>
-        <input class="form-control"  autocomplete="off" id="date" value="{{$data->discount_from}}" name="from" placeholder="MM/DD/YYY" type="text"/>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="form-group"> <!-- Date input -->
-        <label class="control-label" for="date">To</label>
-        <input class="form-control" autocomplete="off" id="date2" value="{{$data->discount_to}}" name="to" placeholder="MM/DD/YYY" type="text"/>
-      </div>
-    </div>
-
-    </div>
-          {{--  --}}
-
-          
-        <div class="form-group">
-            <label for="exampleSelectBorder">subCategory</label>
-            <select class="custom-select border-1 border-light" name="subcategory" id="exampleSelectBorder">
-             
-
-              @isset($subcategory)
-              @foreach ($subcategory as $item)
-              <option value="{{$item->id}}" @if($data->subcategory_id==$item->id) selected @endif>{{$item->name}}</option>
-              @endforeach
-              @endisset
-            </select>
+          <div class="col-sm-2">
+          <img class="img-fluid img-bordered" src="{{asset('image/'.$data->image)}}">
           </div>
+          <div class="col-sm-10">
 
-       </div>
+              <div class="form-group">
 
-          {{--start image --}}
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Image</th>
-            <th scope="col" width="120px">Option</th> 
-          </tr>
-        </thead>
-        <tbody id="tablebody">
-          @isset($image)
-          @foreach ($image as $img)
-          {{-- put foreach before starting the tr --}}
-          <tr>
-           
-            <td>
-            
-              <div class="row">
-                <div class="col-sm-2">
-                  <img class="img-fluid img-bordered" src="{{asset('image/'.$img->image)}}">
-              </div>
-              <div class="col-sm-10">
-              
-                  <input type="hidden" name="AllImages[]" value="{{$img->id}}" id="exampleInputFile">
-              
-            </div>
-            </div>
- 
-           </td>
-
-            <td>
-              <button onclick="deleteRow(event)" class="btn btn-sm btn-danger" type="button"><i class="fas fa-minus"></i></button></td>
-      
-          </tr>
-           @endforeach
-           @endisset
-          {{-- end foreach after ending the tr --}}
-
-            <tr>
-              <td>
+                <label for="exampleInputFile">upload image</label>
                 <div class="input-group">
                   <div class="custom-file">
-                    <input type="file" name="image[]" class="custom-file-input" id="exampleInputFile">
+                    <input type="file" name="image" class="custom-file-input" id="exampleInputFile">
                     <label class="custom-file-label" for="exampleInputFile">Choose image</label>
-                  </div>  
+                  </div>
                 </div>
-              </td>
-  
-              <td><button onclick="AddRow(event)" class="btn btn-sm btn-info" type="button"><i class="fas fa-plus"></i></button>
-                <button onclick="deleteRow(event)" class="btn btn-sm btn-danger" type="button"><i class="fas fa-minus"></i></button></td>
+              </div>
 
-  
-            </tr>
+                </div>
 
-     
-        </tbody>
-      </table>      {{-- end image --}}
+            </div>
 
+            <!-- start categories -->
+            <div class="form-group">
+            <label>Category</label>
+              @isset($categories)
+              @foreach($categories as $item)
+              
 
-       {{--start property --}}
-       <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Key</th>
-            <th scope="col">Value</th>
-            <th scope="col">Option</th>
-          </tr>
-        </thead>
-        <tbody id="table2body">
-          @isset($property)
-          @foreach ($property as $pro)
-          <tr>
-            <td>
-              <input type="text" class="form-control" name="key[]"  id="example1" value="{{$pro->key}}">
-            </td>
+              <div class="form-check">      
+              <input class="form-check-input" type="checkbox" name="category" id="inlineCheckbox{{$item->id}}" value="{{$item->id}}"
+              @foreach($data->categories as $dataItem)  @if ($dataItem->id == $item->id) checked @endif @endforeach>
 
-            <td>
-              <input type="text" class="form-control" name="value[]"  id="example2" value="{{$pro->value}}">
-            </td>
-
-            <td><button onclick="AddRow2(event)" class="btn btn-sm btn-info" type="button"><i class="fas fa-plus"></i></button>
-            <button onclick="deleteRow2(event)" class="btn btn-sm btn-danger" type="button"><i class="fas fa-minus"></i></button></td>
-
-          </tr>
-          @endforeach
-          @endisset
-
-{{--           
-            <tr>
-              <td>
-                <input type="text" class="form-control" name="key[]"  id="example1" value="">
-              </td>
-
-              <td>
-                <input type="text" class="form-control" name="value[]"  id="example2" value="">
-              </td>
-  
-              <td><button onclick="AddRow2(event)" class="btn btn-sm btn-info" type="button"><i class="fas fa-plus"></i></button>
-              <button onclick="deleteRow2(event)" class="btn btn-sm btn-danger" type="button"><i class="fas fa-minus"></i></button></td>
-  
-            </tr> --}}
-           
-
-
-        </tbody>
-      </table>      {{-- end property --}}
-
-
+              <label class="form-check-label" for="inlineCheckbox{{$item->id}}">{{$item->name}}</label>
+            </div>
             
+
+              @endforeach
+              @endisset
           </div>
+          <!-- end categories -->
+       </div>
+      
      
-
-
           <!-- /.card-body -->
 
           <div class="card-footer">
@@ -213,36 +90,21 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery.ajaxsubmit@1.0.3/dist/jquery.ajaxsubmit.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
-  $("#productForm").validate({
+  $("#editPostForm").validate({
     rules: {
-        name: {
-           required: true,
-            },
-         description: {
+        title: {
                 required: true,
-         }, 
-        price: {
-            required: true,
-        },          
-        discount: {
-            required: true,
-        },
-        from: {
-            required: true,
-        },
-        to: {
+            }, 
+        body: {
             required: true,
         },
         image: {
-            required: false,
+          required: true,
         },
-        key: {
-            required: false,
-        },
-        value: {
-            required: false,
-        },
-     
+        category: {
+            required: true,
+        }
+
     },
     highlight: function(element) {
         $(element).addClass('is-invalid');
@@ -260,7 +122,7 @@
         // var formData = new FormData($("#exampleInputFile")[0]);
         var formData = new FormData(form);
          $.ajax({
-              url: '{{route('updateProduct',$data->id)}}',
+              url: '{{route('updatePost',$data->id)}}',
               type: 'post',
               data: formData,
               contentType: false,
@@ -269,9 +131,10 @@
                  if(response != 0){
                   Swal.fire(
                 'success!',
-                'You updated this product!',
+                'You updated this post!',
                 'success'
 )
+             
                  }else{
                     alert('file not uploaded');
                  }
@@ -281,7 +144,7 @@
                 if(response!=0){
                   Swal.fire(
                'error!',
-               'cannot update this product',
+               'cannot update this post',
                'error'
 )
                 }
@@ -290,23 +153,5 @@
      
     }
 });
-
-    function AddRow(event){
-       var html = '<tr> <td> <div class="input-group"> <div class="custom-file"> <input type="file" name="image[]" class="custom-file-input" id="exampleInputFile"> <label class="custom-file-label" for="exampleInputFile">Choose image</label> </div> </div> </td> <td><button onclick="AddRow(event)" class="btn btn-sm btn-info" type="button"><i class="fas fa-plus"></i></button> <button onclick="deleteRow(event)" class="btn btn-sm btn-danger" type="button"><i class="fas fa-minus"></i></button></td> </tr>';
-    $("#tablebody").append(html);
-    }
-
-    function deleteRow(event){
-      $(event.target).closest('tr').remove();
-    }
-
-    function AddRow2(event){
-       var html = '<tr> <td> <input type="text" class="form-control" name="key[]" id="example1" value=""> </td> <td> <input type="text" class="form-control" name="value[]" id="example2" value=""> </td> <td><button onclick="AddRow(event)" class="btn btn-sm btn-info" type="button"><i class="fas fa-plus"></i></button> <button onclick="deleteRow(event)" class="btn btn-sm btn-danger" type="button"><i class="fas fa-minus"></i></button></td> </tr>';
-    $("#table2body").append(html);
-    }
-
-    function deleteRow2(event){
-      $(event.target).closest('tr').remove();
-    }
 </script>
 @endsection

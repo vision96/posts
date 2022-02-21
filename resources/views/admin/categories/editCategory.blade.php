@@ -11,11 +11,6 @@
         <!-- /.card-header -->
         <!-- form start -->
 
-        
-@include('admin.includes.alerts.success')
-@include('admin.includes.alerts.error')
-    
-
         <form id="categoryForm" class="form" action="" method="POST"
         enctype="multipart/form-data">
           @csrf
@@ -27,12 +22,6 @@
             <input type="text" class="form-control" name="name"  id="exampleInput1" value="{{$data->name}}" placeholder="Enter name">
           </div>
 
-         <div class="form-group">
-            <label>Description</label>
-            <textarea class="form-control" rows="3" name="description" placeholder="Enter ...">{{$data->description}}</textarea>
-          </div> 
-
-     
           <div class="form-group">
             <label for="exampleInput2">Slug</label>
             <input type="text" class="form-control" name="slug"  id="exampleInput2" value="{{$data->slug}}" placeholder="slug">
@@ -40,33 +29,9 @@
 
 
        </div>
-       <div class="row">
-
-       <div class="col-sm-2">
-        <img class="img-fluid img-bordered" src="{{asset('image/'.$data->image)}}">
-    </div>
-    <div class="col-sm-10">
-
-            <div class="form-group">
-
-              <label for="exampleInputFile">upload image</label>
-              <div class="input-group">
-                <div class="custom-file">
-                  <input type="file" name="image" class="custom-file-input" id="exampleInputFile">
-                  <label class="custom-file-label" for="exampleInputFile">Choose image</label>
-                </div>
-              </div>
-            </div>
-
-              </div>
-
-          </div>
-
-            
+      
           </div>
      
-
-
           <!-- /.card-body -->
 
           <div class="card-footer">
@@ -91,16 +56,10 @@
     rules: {
         name: {
                 required: true,
-            },
-        description: {
-                required: true,
-         }, 
+            }, 
         slug: {
             required: true,
-        },          
-        image: {
-            required: false,
-        },
+        }
     },
     highlight: function(element) {
         $(element).addClass('is-invalid');
@@ -130,7 +89,7 @@
                 'You updated this category!',
                 'success'
 )
-             $('input').val(""); 
+             
                  }else{
                     alert('file not uploaded');
                  }

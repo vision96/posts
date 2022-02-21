@@ -4,15 +4,15 @@
     
             <div class="content-header row">
                 <div class="content-header-left col-md-6 col-12 mb-2">
-                    <h3 class="content-header-title"> View Products</h3>
+                    <h3 class="content-header-title"> View Posts</h3>
                     <div class="row breadcrumbs-top">
                         <div class="breadcrumb-wrapper col-12">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="#">Dashboard</a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="#">Products</a>
+                                <li class="breadcrumb-item"><a href="#">Posts</a>
                                 </li>
-                                <li class="breadcrumb-item active"> View Products
+                                <li class="breadcrumb-item active"> View Posts
                                 </li>
                             </ol>
                         </div>
@@ -59,55 +59,56 @@
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 <script>
 
-    function deleted(id){
-     Swal.fire({
-     title: 'Are you sure?',
-     text: "You won't be able to revert this!",
-     icon: 'warning',
-     showCancelButton: true,
-     confirmButtonColor: '#3085d6',
-     cancelButtonColor: '#d33',
-     confirmButtonText: 'Yes, delete it!'
-   }).then((result) => {
-     if (result.isConfirmed) {
-     
-       $.ajaxSetup({
-       headers: {
-           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-       }
-   });
-       $.ajax({
-                 url: '{{route('deleteProduct')}}',
-                 type: 'post',
-                 data:  {"id":id},
-                 datatype: "json",
-                 success: function(response){
-                    window.LaravelDataTables["productdatatable-table"].ajax.reload() //from browser (javascript content)
-                   Swal.fire(
-                  'Deleted!',
-                  'Your file has been deleted.',
-                  'success'
-       )
-                 },
+ function deleted(id){
+  Swal.fire({
+  title: 'Are you sure?',
+  text: "You won't be able to revert this!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.isConfirmed) {
+  
+    $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+    $.ajax({
+              url: '{{route('deletePost')}}',
+              type: 'post',
+              data:  {"id":id},
+              datatype: "json",
+              success: function(response){
+                window.LaravelDataTables["postdatatable-table"].ajax.reload()
+                Swal.fire(
+               'Deleted!',
+               'Your file has been deleted.',
+               'success'
+    )
+              },
+
+              error:function(response){
+                if(response!=0){
+                  Swal.fire(
+               'error!',
+               'cannot delete this product',
+               'error'
+)
+                }
+              }
+           });
    
-                 error:function(response){
-                   if(response!=0){
-                     Swal.fire(
-                  'error!',
-                  'cannot delete this product',
-                  'error'
-   )
-                   }
-                 }
-              });
-      
-     }
-   })
-    } 
-   
-   </script>
+  }
+})
+ } 
+
+</script>
 {!!$dataTable->scripts()!!}
 @endsection
 

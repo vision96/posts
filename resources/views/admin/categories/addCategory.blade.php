@@ -12,10 +12,7 @@
         <!-- form start -->
 
         
-@include('admin.includes.alerts.success')
-@include('admin.includes.alerts.error')
-
-        <form id="categoryForm" class="form" action="" method="POST"
+      <form id="categoryForm" class="form" action="" method="POST"
         enctype="multipart/form-data">
           @csrf
           <div class="card-body">
@@ -26,13 +23,6 @@
             <input type="text" class="form-control" name="name"  id="exampleInput1" value="" placeholder="Enter name">
           </div>
 
-              
-          <div class="form-group">
-            <label>Description</label>
-            <textarea class="form-control" rows="3" name="description" placeholder="Enter ..."></textarea>
-          </div> 
-
-     
           <div class="form-group">
             <label for="exampleInput2">Slug</label>
             <input type="text" class="form-control" name="slug"  id="exampleInput2" value="" placeholder="slug">
@@ -40,17 +30,7 @@
 
 
        </div>
-            <div class="form-group">
-              <label for="exampleInputFile">Upload image</label>
-              <div class="input-group">
-                <div class="custom-file">
-                  <input type="file" name="image" class="custom-file-input" id="exampleInputFile">
-                  <label class="custom-file-label" for="exampleInputFile">Choose image</label>
-                </div>
-            
-              </div>
-            </div>
-        
+       
           </div>
           <!-- /.card-body -->
 
@@ -73,20 +53,20 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery.ajaxsubmit@1.0.3/dist/jquery.ajaxsubmit.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
+    $.ajaxSetup({
+       headers: {
+           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+       }
+   });
+   
   $("#categoryForm").validate({
     rules: {
         name: {
-                required: true,
+            required: true,
             },
-        description: {
-             required: true,
-         }, 
         slug: {
             required: true,
-        },          
-        image: {
-            required: true,
-        },
+        }
     },
     highlight: function(element) {
         $(element).addClass('is-invalid');

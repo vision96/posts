@@ -25,6 +25,14 @@ Auth::routes();
 Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){
     Route::get('/dashboard', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('dashboard');
   
+        //start user
+        Route::get('/viewUsers', [App\Http\Controllers\Admin\UserController::class, 'viewUsers'])->name('viewUsers');
+        Route::post('/DeleteUser', [App\Http\Controllers\Admin\UserController::class, 'DeleteUser'])->name('DeleteUser');
+        Route::post('/StoreUser', [App\Http\Controllers\Admin\UserController::class, 'StoreUser'])->name('StoreUser');
+        Route::post('/editUser', [App\Http\Controllers\Admin\UserController::class, 'editUser'])->name('editUser');
+        Route::post('/updateUser', [App\Http\Controllers\Admin\UserController::class, 'updateUser'])->name('updateUser');
+        //start user
+        
         //start category
         Route::get('/addCategory', [App\Http\Controllers\Admin\CategoryController::class, 'addCategory'])->name('addCategory');
         Route::post('/storeCategory', [App\Http\Controllers\Admin\CategoryController::class, 'storeCategory'])->name('storeCategory');

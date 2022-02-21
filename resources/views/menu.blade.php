@@ -11,7 +11,24 @@
           </p>
         </a>
     </li>
-           
+    <li class="nav-item">
+    <a href="#" class="nav-link">
+      <i class="far fa-address-card"></i>
+      <p>
+        Users
+        <i class="right fas fa-angle-left"></i>
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="{{route('viewUsers')}}" class="nav-link">
+          <i class="far fa-circle nav-icon"></i>
+          <p>view Users</p>
+        </a>
+      </li>
+   
+    </ul>
+  </li>
         <li class="nav-item">
             <a href="#" class="nav-link">
                 <i class="fas fa-tags"></i>

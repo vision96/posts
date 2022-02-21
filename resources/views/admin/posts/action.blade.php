@@ -1,4 +1,4 @@
-<a href="{{route('editProduct',$id)}}"
+<a href="{{route('editPost',$id)}}"
     class="btn btn-outline-primary btn-min-width box-shadow-3 mr-1 mb-1">
     <i class="fas fa-edit"></i>
 </a>
