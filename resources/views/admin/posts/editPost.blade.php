@@ -122,7 +122,7 @@
         // var formData = new FormData($("#exampleInputFile")[0]);
         var formData = new FormData(form);
          $.ajax({
-              url: '{{route('updatePost',$data->id)}}',
+              url: "{{route('updatePost',$data->id)}}",
               type: 'post',
               data: formData,
               contentType: false,

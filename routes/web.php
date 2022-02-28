@@ -13,11 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/home', [App\Http\Controllers\Frontend\frontendController::class, 'index'])->name('home');
 
-Auth::routes();
+//Auth::routes();
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -31,8 +29,17 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){
         Route::post('/StoreUser', [App\Http\Controllers\Admin\UserController::class, 'StoreUser'])->name('StoreUser');
         Route::post('/editUser', [App\Http\Controllers\Admin\UserController::class, 'editUser'])->name('editUser');
         Route::post('/updateUser', [App\Http\Controllers\Admin\UserController::class, 'updateUser'])->name('updateUser');
+        Route::get('/addroleuser', [App\Http\Controllers\Admin\UserController::class, 'addroleuser'])->name('addroleuser');
         //start user
         
+         //start role
+         Route::post('/storeRole', [App\Http\Controllers\Admin\RoleController::class, 'storeRole'])->name('storeRole');
+         Route::get('/viewRoles', [App\Http\Controllers\Admin\RoleController::class, 'viewRoles'])->name('viewRoles');
+         Route::post('/editRole', [App\Http\Controllers\Admin\RoleController::class, 'editRole'])->name('editRole');
+         Route::post('/updateRole', [App\Http\Controllers\Admin\RoleController::class, 'updateRole'])->name('updateRole');
+         Route::post('/deleteRole', [App\Http\Controllers\Admin\RoleController::class, 'deleteRole'])->name('deleteRole');
+         //end role
+
         //start category
         Route::get('/addCategory', [App\Http\Controllers\Admin\CategoryController::class, 'addCategory'])->name('addCategory');
         Route::post('/storeCategory', [App\Http\Controllers\Admin\CategoryController::class, 'storeCategory'])->name('storeCategory');

@@ -56,7 +56,7 @@
           <!-- /.card-body -->
 
           <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Add</button>
           </div>
         </form>
       </div>
@@ -108,7 +108,7 @@
         // var formData = new FormData($("#exampleInputFile")[0]);
         var formData = new FormData(form);
          $.ajax({
-              url: '{{route('storePost')}}',
+              url: "{{route('storePost')}}",
               type: 'post',
               data: formData,
               contentType: false,

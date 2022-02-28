@@ -77,7 +77,7 @@
         // var formData = new FormData($("#exampleInputFile")[0]);
         var formData = new FormData(form);
          $.ajax({
-              url: '{{route('updateCategory',$data->id)}}',
+              url: "{{route('updateCategory',$data->id)}}",
               type: 'post',
               data: formData,
               contentType: false,

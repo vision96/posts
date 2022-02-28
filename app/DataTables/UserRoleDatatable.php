@@ -1,15 +1,15 @@
 <?php
 
 namespace App\DataTables;
-use App\Models\User;
 
+use App\Models\RoleUser;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class AdminDatatable extends DataTable
+class UserRoleDatatable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -21,19 +21,16 @@ class AdminDatatable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('action', 'admin.users.action')
-       
-        ->rawColumns(['image', 'action']);
-        ;
+            ->addColumn('action', 'admin.roles.action');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\AdminDatatable $model
+     * @param \App\Models\categoryDatatable $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(User $model)
+    public function query(RoleUser $model)
     {
         return $model->newQuery();
     }
@@ -46,7 +43,7 @@ class AdminDatatable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('admindatatable-table')
+                    ->setTableId('roleuserdatatable-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->dom('Bfrtip')
@@ -69,8 +66,8 @@ class AdminDatatable extends DataTable
     {
         return [
             Column::make('id'),
-            Column::make('name'),
-            Column::make('email'),
+            Column::make('role_id'),
+            Column::make('user_id'),
             Column::computed('action')
             ->exportable(false)
             ->printable(false)
@@ -86,6 +83,6 @@ class AdminDatatable extends DataTable
      */
     protected function filename()
     {
-        return 'Admin_' . date('YmdHis');
+        return 'roleuser_' . date('YmdHis');
     }
 }

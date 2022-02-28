@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\RoleUser;
 use App\DataTables\AdminDatatable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
@@ -100,4 +101,20 @@ public function StoreUser(Request $request){
     }
     
     }
+
+    public function addroleuser(Request $request){
+       try {
+            $request->validate([
+                'name' => 'required|max:100',
+            ]);
+
+            RoleUser::create([
+                'name' => $request->name,
+            ]);
+            
+            return response()->json(['success' => 'تمت الاضافة بنجاح']);
+        } catch (\exception $ex) {
+            return response()->json(['error' => 'هناك خطا ما ,حاول لاحقا', 'err' => $ex]);
+        }
+}
 }

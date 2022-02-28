@@ -239,7 +239,7 @@ function deleted(id){
        }
    });
        $.ajax({
-                 url: '{{route('DeleteUser')}}',
+                 url: "{{route('DeleteUser')}}",
                  type: 'post',
                  data:  {"id":id},
                  datatype: "json",
@@ -305,7 +305,7 @@ function deleted(id){
         // var formData = new FormData($("#exampleInputFile")[0]);
         var formData = new FormData(form);
          $.ajax({
-              url: '{{route('StoreUser')}}',
+              url: "{{route('StoreUser')}}",
               type: 'post',
               data: formData,
               contentType: false,
@@ -359,7 +359,7 @@ function deleted(id){
 
  
     $.ajax({
-                 url: '{{route('editUser')}}',
+                 url: "{{route('editUser')}}",
                  type: 'post',
                  data:  {"id":id},
                  datatype: "json",
@@ -424,7 +424,7 @@ function deleted(id){
         // var formData = new FormData($("#exampleInputFile")[0]);
         var formData2 = new FormData(form);
          $.ajax({
-              url: '{{route('updateUser')}}',
+              url: "{{route('updateUser')}}",
               type: 'post',
               data: formData2,
               contentType: false,

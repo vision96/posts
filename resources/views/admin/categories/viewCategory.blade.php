@@ -80,7 +80,7 @@
     }
 });
     $.ajax({
-              url: '{{route('deleteCategory')}}',
+              url: "{{route('deleteCategory')}}",
               type: 'post',
               data:  {"id":id},
               datatype: "json",
@@ -97,7 +97,7 @@
                 if(response!=0){
                   Swal.fire(
                'error!',
-               'cannot delete this product',
+               'cannot delete this role',
                'error'
 )
                 }
