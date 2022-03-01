@@ -1,6 +1,6 @@
-<a href="{{route('')}}" type="button" data-dismiss="modal"
+<a href="{{route('singleUser',$id)}}" type="button" data-dismiss="modal"
 class="btn btn-outline-success editbtn btn-min-width box-shadow-3 mr-1 mb-1">
-<i class="fas fa-user"></i>
+<i class="fas fa-eye"></i>
 </a> 
 
 <button onclick="edit({{$id}})"  type="button" data-dismiss="modal"

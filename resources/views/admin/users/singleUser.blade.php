@@ -6,6 +6,26 @@
         <!-- general form elements -->
         <div class="card card-primary">
             <div class="card-header">
+                <h3 class="card-title">View user</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+
+                <div class="card-body">
+                    <div class="media">
+                    <img src="/images/image.jpg" class="mr-3" alt="..." style="width:100px;height:100px;object-fit: cover;">
+                    <div class="media-body mt-3">
+                        <h5 class="mt-0">{{$user->name}}</h5>
+                        <h5 class="mt-0">{{$user->email}}</h5>
+                    </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+
+        </div>
+
+        <div class="card card-primary">
+            <div class="card-header">
                 <h3 class="card-title">Attach Role</h3>
             </div>
             <!-- /.card-header -->
@@ -17,11 +37,14 @@
                 <div class="card-body">
                     <div class="form-group">
 
-                        <div class="form-group">
-                            <label for="exampleInput1">Name</label>
-                            <input type="text" class="form-control" name="name" id="exampleInput1" value="" placeholder="Enter name">
+                    <div class="form-group col-md-4">
+                        <label for="inputRole">Role</label>
+                        <select id="inputRole" class="form-control" name="role">
+                            @foreach($roles as $role)
+                            <option value="{{$role->id}}">{{$role->name}}</option>
+                            @endforeach
+                        </select>
                         </div>
-
                     </div>
 
                 </div>
@@ -34,14 +57,10 @@
         </div>
         <!-- /.card -->
 
-
-
-
     </div>
 </div>
 
 <div class="content-body">
-    <!-- DOM - jQuery events table -->
     <section id="dom">
         <div class="row ml-3 mr-3">
             <div class="col-12">
@@ -60,7 +79,7 @@
 
                         <div class="row">
                             <div class="col-md-9" style="float:right;">
-                                <h3>User Roles</h3>
+                                <h5>User Roles</h5>
                             </div>
 
                         </div>
@@ -70,8 +89,8 @@
 
                     <div class="card-content collapse show">
                         <div class="card-body card-dashboard table-responsive">
-                            {!!$dataTable->table()!!}
-                            <div class="justify-content-center d-flex">
+                        {!!$dataTable->table()!!}
+                        <div class="justify-content-center d-flex">
                             </div>
                         </div>
                     </div>
@@ -88,9 +107,10 @@
 @section('javascript')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery.ajaxsubmit@1.0.3/dist/jquery.ajaxsubmit.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-{!!$dataTable->scripts()!!}
 
+{!!$dataTable->scripts()!!}
 
 <script>
     $.ajaxSetup({
@@ -101,7 +121,7 @@
 
     $("#RoleUserForm").validate({
         rules: {
-            name: {
+            role: {
                 required: true,
             }
         },
@@ -121,7 +141,7 @@
             // var formData = new FormData($("#exampleInputFile")[0]);
             var formData = new FormData(form);
             $.ajax({
-                url: "{{route('storeUserRole')}}",
+                url: "{{route('addRoleUser',$user->id)}}",
                 type: 'post',
                 data: formData,
                 contentType: false,

@@ -23,7 +23,7 @@ class AdminDatatable extends DataTable
             ->eloquent($query)
             ->addColumn('action', 'admin.users.action')
        
-        ->rawColumns(['image', 'action']);
+        ->rawColumns(['action']);
         ;
     }
 

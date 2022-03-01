@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\RoleUser;
+use App\Models\User;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -21,18 +21,23 @@ class UserRoleDatatable extends DataTable
     {
         return datatables()
             ->eloquent($query)
+            // ->addColumn('role', function (User $user) {
+            //     return $user->roles->name;
+            // })
             ->addColumn('action', 'admin.roles.action');
+
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\categoryDatatable $model
+     * @param \App\Models\UserRoleDatatable $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(RoleUser $model)
+    public function query(User $model)
     {
-        return $model->newQuery();
+        return $model->roles()->newQuery();
+        //return $model->where('user_id','=','id')->newQuery();
     }
 
     /**
@@ -65,15 +70,10 @@ class UserRoleDatatable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::make('id'),
-            Column::make('role_id'),
-            Column::make('user_id'),
-            Column::computed('action')
-            ->exportable(false)
-            ->printable(false)
-            ->width(200)
-            ->addClass('text-center'),
-        ];
+            ['data'=>'id','name'=>'id','title'=>'id'],
+            ['data'=>'name','name'=>'name','title'=>'Role'],
+            ['data'=>'action','name'=>'action','title'=>'Action'],
+            ];
     }
 
     /**

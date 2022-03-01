@@ -15,21 +15,22 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/home', [App\Http\Controllers\Frontend\frontendController::class, 'index'])->name('home');
 
-//Auth::routes();
+Auth::routes();
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //admin group
 Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){
     Route::get('/dashboard', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('dashboard');
-  
+
         //start user
         Route::get('/viewUsers', [App\Http\Controllers\Admin\UserController::class, 'viewUsers'])->name('viewUsers');
         Route::post('/DeleteUser', [App\Http\Controllers\Admin\UserController::class, 'DeleteUser'])->name('DeleteUser');
         Route::post('/StoreUser', [App\Http\Controllers\Admin\UserController::class, 'StoreUser'])->name('StoreUser');
         Route::post('/editUser', [App\Http\Controllers\Admin\UserController::class, 'editUser'])->name('editUser');
         Route::post('/updateUser', [App\Http\Controllers\Admin\UserController::class, 'updateUser'])->name('updateUser');
-        Route::get('/addroleuser', [App\Http\Controllers\Admin\UserController::class, 'addroleuser'])->name('addroleuser');
+        Route::post('/addRoleUser/{id}', [App\Http\Controllers\Admin\UserController::class, 'addRoleUser'])->name('addRoleUser');
+        Route::get('/singleUser/{id}', [App\Http\Controllers\Admin\UserController::class, 'singleUser'])->name('singleUser');
         //start user
         
          //start role

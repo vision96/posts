@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
 use App\Models\RoleUser;
 use App\DataTables\AdminDatatable;
+use App\DataTables\UserRoleDatatable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 
@@ -19,13 +21,13 @@ class UserController extends Controller
     }
 
     public function editUser(request $request){
-        $users = User::select('id','name','email','password','image')->findOrFail($request->id);
+        $users = User::findOrFail($request->id);
         return response()->json($users);
     }
            
     public function updateUser(request $request){
         try{
-           $users = User::select('id','name','email','password','image')->findOrFail($request->id);
+           $users = User::findOrFail($request->id);
            
            $request->validate([
                'name'=>'required|max:100',
@@ -102,14 +104,12 @@ public function StoreUser(Request $request){
     
     }
 
-    public function addroleuser(Request $request){
+    public function addRoleUser(Request $request,$id){
        try {
-            $request->validate([
-                'name' => 'required|max:100',
-            ]);
-
+         
             RoleUser::create([
-                'name' => $request->name,
+                'role_id' => $request->role,
+                'user_id' => $id,
             ]);
             
             return response()->json(['success' => 'تمت الاضافة بنجاح']);
@@ -117,4 +117,11 @@ public function StoreUser(Request $request){
             return response()->json(['error' => 'هناك خطا ما ,حاول لاحقا', 'err' => $ex]);
         }
 }
+
+     public function singleUser(UserRoleDatatable $dtable,$id){
+        $user = User::findOrFail($id);
+        //dd($user->roles()->get());
+        $roles = Role::get();
+        return $dtable->with('id')->render('admin.users.singleUser',compact('user','roles'));
+     }
 }
