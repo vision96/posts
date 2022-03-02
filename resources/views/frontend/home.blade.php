@@ -11,6 +11,10 @@
     body {
       font-family: cursive;
     }
+    img{
+      width: 100%;
+      object-fit: contain;
+    }
   </style>
 </head>
 
@@ -21,22 +25,43 @@
       <div class="col-md-8">
         <h3>Posts</h3>
       </div>
+
+      @foreach($posts as $post)
       <div class="col-md-8 mt-3">
-        <div class="card" style="width: 100%;">
+        <div class="card" style="width: 100%;box-shadow: 0px 0px 6px 2px #0000002e;">
           <div class="card-body">
             <div class="media">
-              <img src="/images/image.jpg" class="mr-3" alt="..." style="width:50px;height:50px;border-radius:25px;object-fit: cover;">
+              <img src="{{asset('image/'.$post->user->image)}}" class="mr-3" onerror="this.src='/images/default.png';" alt="..." style="width:50px;height:50px;border-radius:25px;object-fit: cover;">
               <div class="media-body">
-                <h5 class="mt-0">Allen Allan</h5>
-                <p style="color:#00000085;">Admin</p>
+                <h5 class="mt-0">{{$post->user->name}}</h5>
+                <p style="color:#00000085;">@foreach($post->user->roles as $role)/{{$role->name}}@endforeach</p>
               </div>
             </div>
-            <h6 class="card-title">Post title</h6>
-            <p class="card-text">PostBody Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <h6 class="card-title">{{$post->title}}</h6>
+            <p class="card-text">{{$post->body}}</p>
+
+              
+          <?php
+          $media = $post->getMedia('media');
+          //dd($post);
+          ?>
+
+          @foreach($media as $me)
+          {{$me}}
+          @endforeach
+
           </div>
-          <img src="/images/image.jpg" class="card-img-top" alt="...">
+        
+          <!--  -->
         </div>
       </div>
+      @endforeach
+
+   
+      <!-- @foreach($media as $me)
+          {{$me->getUrl()}}
+          @endforeach -->
+
     </div>
   </div>
 

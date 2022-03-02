@@ -28,11 +28,11 @@
           </div> 
 
           <div class="form-group">
-              <label for="exampleInputFile">Upload image</label>
+              <label for="file-upload">Upload image</label>
               <div class="input-group">
                 <div class="custom-file">
-                  <input type="file" name="image" class="custom-file-input" id="exampleInputFile">
-                  <label class="custom-file-label" for="exampleInputFile">Choose image</label>
+                  <input type="file" name="image" class="custom-file-input" id="fileupload">
+                  <label class="custom-file-label" id="filename" for="fileupload">choose image</label>
                 </div>
             
               </div>
@@ -140,4 +140,14 @@
     }
 });
 </script>
+
+<script>
+  $(function(){
+    $("#fileupload").change(function(event){
+      var x = event.target.files[0].name
+      $("#filename").text(x)
+    });
+  })
+  </script>
+
 @endsection

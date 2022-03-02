@@ -31,9 +31,10 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){
         Route::post('/updateUser', [App\Http\Controllers\Admin\UserController::class, 'updateUser'])->name('updateUser');
         Route::post('/addRoleUser/{id}', [App\Http\Controllers\Admin\UserController::class, 'addRoleUser'])->name('addRoleUser');
         Route::get('/singleUser/{id}', [App\Http\Controllers\Admin\UserController::class, 'singleUser'])->name('singleUser');
+        Route::get('/DeleteUserRole/{id}', [App\Http\Controllers\Admin\UserController::class, 'DeleteUserRole'])->name('DeleteUserRole');
         //start user
         
-         //start role
+        //start role
          Route::post('/storeRole', [App\Http\Controllers\Admin\RoleController::class, 'storeRole'])->name('storeRole');
          Route::get('/viewRoles', [App\Http\Controllers\Admin\RoleController::class, 'viewRoles'])->name('viewRoles');
          Route::post('/editRole', [App\Http\Controllers\Admin\RoleController::class, 'editRole'])->name('editRole');
@@ -60,6 +61,7 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){
         Route::post('/updatePost/{id}', [App\Http\Controllers\Admin\PostController::class, 'updatePost'])->name('updatePost');
         Route::post('/deletePost', [App\Http\Controllers\Admin\PostController::class, 'deletePost'])->name('deletePost');
         Route::get('/search', [App\Http\Controllers\Admin\PostController::class, 'search'])->name('search');
+        Route::post('/publishPost/{id}', [App\Http\Controllers\Admin\PostController::class, 'publishPost'])->name('publishPost');
         //end posts
 });
 

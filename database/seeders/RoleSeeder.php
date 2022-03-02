@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Role;
+use DB;
 class RoleSeeder extends Seeder
 {
     /**
@@ -13,12 +14,15 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        Role::create([
-            'name' => 'admin',
-        ]);
+        //seed roles
+        DB::table('roles')->delete();
 
-        Role::create([
-            'name' => 'writer',
-        ]);
+        $roles = [
+            ['id' => 1, 'name' => 'Admin'],
+            ['id' => 2, 'name' => 'Writer'],
+            ];
+    
+        Role::insert($roles);
+
     }
 }

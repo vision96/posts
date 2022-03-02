@@ -85,12 +85,14 @@
               data:  {"id":id},
               datatype: "json",
               success: function(response){
-                window.LaravelDataTables["categorydatatable-table"].ajax.reload()
                 Swal.fire(
                'Deleted!',
                'Your file has been deleted.',
                'success'
-    )
+            ).then(function(){ 
+              window.LaravelDataTables["categorydatatable-table"].ajax.reload()
+
+                         });
               },
 
               error:function(response){

@@ -11,16 +11,16 @@
             <!-- /.card-header -->
             <!-- form start -->
 
-                <div class="card-body">
-                    <div class="media">
-                    <img src="/images/image.jpg" class="mr-3" alt="..." style="width:100px;height:100px;object-fit: cover;">
+            <div class="card-body">
+                <div class="media">
+                    <img src="{{asset('image/'.$user->image)}}" class="mr-3" alt="..." onerror="this.src='/images/default.png';" style="width:100px;height:100px;object-fit: cover;">
                     <div class="media-body mt-3">
                         <h5 class="mt-0">{{$user->name}}</h5>
                         <h5 class="mt-0">{{$user->email}}</h5>
                     </div>
-                    </div>
                 </div>
-                <!-- /.card-body -->
+            </div>
+            <!-- /.card-body -->
 
         </div>
 
@@ -37,7 +37,7 @@
                 <div class="card-body">
                     <div class="form-group">
 
-                    <div class="form-group col-md-4">
+                        <div class="form-group col-md-4">
                         <label for="inputRole">Role</label>
                         <select id="inputRole" class="form-control" name="role">
                             @foreach($roles as $role)
@@ -45,8 +45,22 @@
                             @endforeach
                         </select>
                         </div>
-                    </div>
+                  
 
+                        <!-- <div class="form-group">
+                            <label>Role</label>
+                            @isset($roles)
+                            @foreach($roles as $role)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="role[]" id="inlineCheckbox{{$role->id}}" value="{{$role->id}}"
+                                @foreach($user->roles as $dataUser)  @if ($dataUser->id == $role->id) checked @endif @endforeach>
+                                <label class="form-check-label" for="inlineCheckbox{{$role->id}}">{{$role->name}}</label>
+                            </div>
+                            @endforeach
+                            @endisset
+                        </div>
+                     -->
+                     </div>
                 </div>
                 <!-- /.card-body -->
 
@@ -89,8 +103,27 @@
 
                     <div class="card-content collapse show">
                         <div class="card-body card-dashboard table-responsive">
-                        {!!$dataTable->table()!!}
-                        <div class="justify-content-center d-flex">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">role</th>
+                                        <th scope="col">action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($user_roles as $rolee)
+                                    <tr>
+                                        <td>{{$rolee->name}}</td>
+                                        <td>
+                                            <button onclick="deleted('{{$rolee->id}}')" type="button" class="btn btn-outline-danger btn-min-width box-shadow-3 mr-1 mb-1">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <div class="justify-content-center d-flex">
                             </div>
                         </div>
                     </div>
@@ -110,7 +143,6 @@
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-{!!$dataTable->scripts()!!}
 
 <script>
     $.ajaxSetup({
@@ -152,11 +184,14 @@
                             'success!',
                             'You added a new user role!',
                             'success'
-                        )
+                        ).then(function(){ 
+                            window.location.reload();
+                         });
                         $('input').val("");
                     }
                 },
 
+  
                 error: function(response) {
                     if (response != 0) {
                         Swal.fire(
@@ -171,4 +206,56 @@
         }
     });
 </script>
+
+<script>
+    function deleted(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: "{{route('DeleteUserRole',$user->id)}}",
+                    type: 'get',
+                    data: {
+                        "id": id
+                    },
+                    datatype: "json",
+                    success: function(response) {
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        ).then(function(){ 
+                            window.location.reload();
+                         });
+                    },
+
+                    error: function(response) {
+                        if (response != 0) {
+                            Swal.fire(
+                                'error!',
+                                'cannot delete this user',
+                                'error'
+                            )
+                        }
+                    }
+                });
+
+            }
+        })
+    }
+</script>
+
 @endsection

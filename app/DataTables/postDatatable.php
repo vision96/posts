@@ -21,9 +21,20 @@ class postDatatable extends DataTable
     {
         return datatables()
             ->eloquent($query)
+            ->editColumn('publish_status', function (Post $model) {
+                if ($model->publish_status == 1) {
+                    return 'published';
+                   // return '<span class="label label-success">published</span>';
+                }
+                else {
+                    return 'no';
+                   // return '<span class="label label-danger">no</span>';
+                }
+            })
             ->addColumn('action', 'admin.posts.action');
+           
     }
-
+   
     /**
      * Get query source of dataTable.
      *
@@ -68,6 +79,7 @@ class postDatatable extends DataTable
             Column::make('id'),
             Column::make('title'),
             Column::make('body'),
+            Column::make('publish_status'),
             Column::computed('action')
             ->exportable(false)
             ->printable(false)

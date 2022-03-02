@@ -169,12 +169,13 @@
                     },
                     datatype: "json",
                     success: function(response) {
-                        window.LaravelDataTables["roledatatable-table"].ajax.reload()
                         Swal.fire(
                             'Deleted!',
                             'Your file has been deleted.',
                             'success'
-                        )
+                        ).then(function(){ 
+                            window.LaravelDataTables["roledatatable-table"].ajax.reload()
+                        });
                     },
 
                     error: function(response) {

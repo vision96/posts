@@ -18,28 +18,38 @@
 
           <div class="form-group">
             <label for="exampleInput1">Title</label>
-            <input type="text" class="form-control" name="title"  id="exampleInput1" value="" placeholder="Enter title">
+            <input type="text" class="form-control" name="title"  id="exampleInput1" value="{{$data->title}}" placeholder="Enter title">
           </div>
 
           <div class="form-group">
             <label>Body</label>
-            <textarea class="form-control" rows="3" name="body" placeholder="Enter ..."></textarea>
+            <textarea class="form-control" rows="3" name="body">{{$data->body}}</textarea>
           </div> 
 
           <div class="row">
 
-          <div class="col-sm-2">
-          <img class="img-fluid img-bordered" src="{{asset('image/'.$data->image)}}">
+          <div class="col-sm-3">
+                     
+          <?php
+          $media = $data->getMedia('media');
+          //dd($post);
+          ?>
+          
+          @foreach($media as $me)
+          {{$me}}
+          @endforeach
+
+          <!-- <img class="img-fluid img-bordered" src="{{asset('image/'.$data->image)}}"> -->
           </div>
-          <div class="col-sm-10">
+          <div class="col-sm-12 mt-2">
 
               <div class="form-group">
 
-                <label for="exampleInputFile">upload image</label>
+                <label for="file-upload">upload image</label>
                 <div class="input-group">
                   <div class="custom-file">
-                    <input type="file" name="image" class="custom-file-input" id="exampleInputFile">
-                    <label class="custom-file-label" for="exampleInputFile">Choose image</label>
+                    <input type="file" name="image" class="custom-file-input" id="fileupload">
+                    <label class="custom-file-label" for="fileupload" id="filename">Choose image</label>
                   </div>
                 </div>
               </div>
@@ -52,18 +62,23 @@
             <div class="form-group">
             <label>Category</label>
               @isset($categories)
+              @if(count($categories) > 0)
               @foreach($categories as $item)
               
 
               <div class="form-check">      
-              <input class="form-check-input" type="checkbox" name="category" id="inlineCheckbox{{$item->id}}" value="{{$item->id}}"
+              <input class="form-check-input" type="checkbox" name="category[]" id="inlineCheckbox{{$item->id}}" value="{{$item->id}}"
               @foreach($data->categories as $dataItem)  @if ($dataItem->id == $item->id) checked @endif @endforeach>
 
               <label class="form-check-label" for="inlineCheckbox{{$item->id}}">{{$item->name}}</label>
+
             </div>
             
 
               @endforeach
+              @else
+             </br><a href="{{route('addCategory')}}">Add category from here</a>
+              @endif
               @endisset
           </div>
           <!-- end categories -->
@@ -74,6 +89,11 @@
 
           <div class="card-footer">
             <button type="submit" class="btn btn-primary">Submit</button>
+            <!-- @can('delete_post') 
+          @endcan-->
+          @if(auth()->user()->hasRole('Admin'))
+            <button type="submit" onclick="publish();" class="btn btn-success">Publish</button>
+          @endif  
           </div>
         </form>
       </div>
@@ -83,6 +103,13 @@
 
     </div>
 </div>
+@endsection
+@section('css')
+<style>
+  img{
+    max-width: 100%;
+  }
+  </style>
 @endsection
 
 @section('javascript')
@@ -99,7 +126,7 @@
             required: true,
         },
         image: {
-          required: true,
+          required: false,
         },
         category: {
             required: true,
@@ -133,7 +160,9 @@
                 'success!',
                 'You updated this post!',
                 'success'
-)
+               ).then(function(){ 
+                            window.location.reload();
+                         });
              
                  }else{
                     alert('file not uploaded');
@@ -154,4 +183,46 @@
     }
 });
 </script>
+
+<script>
+  function publish(){
+    $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+    });
+    $.ajax({
+              url: "{{route('publishPost',$data->id)}}",
+              type: 'post',
+              success: function(response){
+                 if(response != 0){
+                  Swal.fire(
+                'success!',
+                'You published this post!',
+                'success'
+               )
+                 }
+              },
+
+              error:function(response){
+                if(response!=0){
+                  Swal.fire(
+               'error!',
+               'cannot publish this post',
+               'error'
+            )
+                }
+              }
+           });
+  }
+  </script>
+<script>
+  $(function(){
+    $("#fileupload").change(function(event){
+      var x = event.target.files[0].name
+      $("#filename").text(x)
+    });
+  })
+  </script>
+
 @endsection

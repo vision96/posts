@@ -80,17 +80,18 @@
     }
 });
     $.ajax({
-              url: '{{route('deletePost')}}',
+              url: "{{route('deletePost')}}",
               type: 'post',
               data:  {"id":id},
               datatype: "json",
               success: function(response){
-                window.LaravelDataTables["postdatatable-table"].ajax.reload()
                 Swal.fire(
                'Deleted!',
                'Your file has been deleted.',
                'success'
-    )
+              ).then(function(){ 
+               window.LaravelDataTables["postdatatable-table"].ajax.reload()
+                 });
               },
 
               error:function(response){
