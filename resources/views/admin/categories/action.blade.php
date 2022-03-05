@@ -1,4 +1,4 @@
-<a href="{{route('editCategory',$id)}}"
+<a href="{{route('category.edit',$id)}}"
     class="btn btn-outline-primary btn-min-width box-shadow-3 mr-1 mb-1" data-toggle="tooltip" data-placement="top" title="edit">
     <i class="fas fa-edit"></i>
 </a>

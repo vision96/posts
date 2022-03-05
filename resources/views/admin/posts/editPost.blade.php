@@ -11,7 +11,7 @@
         <!-- /.card-header -->
         <!-- form start -->
 
-        <form id="editPostForm" class="form" action="" method="POST"
+        <form id="editPostForm" class="form" action="" method="put"
         enctype="multipart/form-data">
           @csrf
           <div class="card-body">
@@ -91,9 +91,9 @@
             <button type="submit" class="btn btn-primary">Submit</button>
             <!-- @can('delete_post') 
           @endcan-->
-          @if(auth()->user()->hasRole('Admin'))
             <button type="submit" onclick="publish();" class="btn btn-success">Publish</button>
-          @endif  
+            <!-- @if(auth()->user()->hasRole('Admin'))
+            @endif   -->
           </div>
         </form>
       </div>
@@ -116,11 +116,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery.ajaxsubmit@1.0.3/dist/jquery.ajaxsubmit.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script type="text/javascript">
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+</script>
 <script>
   $("#editPostForm").validate({
     rules: {
         title: {
-                required: true,
+            required: true,
             }, 
         body: {
             required: true,
@@ -149,8 +156,8 @@
         // var formData = new FormData($("#exampleInputFile")[0]);
         var formData = new FormData(form);
          $.ajax({
-              url: "{{route('updatePost',$data->id)}}",
-              type: 'post',
+              url:"{{route('post.update',1)}}"
+              type: 'put',
               data: formData,
               contentType: false,
               processData: false,

@@ -131,7 +131,7 @@
     <!-- Edit User Code  -->
 
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <form action="" id="editform" method="POST" enctype="multipart/form-data">
+      <form action="" id="editform" method="PUT" enctype="multipart/form-data">
         @csrf
         <div class="modal-dialog">
           <div class="modal-content">
@@ -237,8 +237,8 @@
           }
         });
         $.ajax({
-          url: "{{route('DeleteUser')}}",
-          type: 'post',
+          url: "{{route('user.destroy',1)}}",
+          type: 'delete',
           data: {
             "id": id
           },
@@ -304,7 +304,7 @@
       // var formData = new FormData($("#exampleInputFile")[0]);
       var formData = new FormData(form);
       $.ajax({
-        url: "{{route('StoreUser')}}",
+        url: "{{route('user.store')}}",
         type: 'post',
         data: formData,
         contentType: false,
@@ -355,8 +355,8 @@
 
 
     $.ajax({
-      url: "{{route('editUser')}}",
-      type: 'post',
+      url: "{{route('user.edit',1)}}",
+      type: 'get',
       data: {
         "id": id
       },
@@ -422,9 +422,10 @@
       // var formData = new FormData($("#exampleInputFile")[0]);
       var formData2 = new FormData(form);
       $.ajax({
-        url: "{{route('updateUser')}}",
-        type: 'post',
+        url: "{{route('user.update',1)}}",
+        type: 'put',
         data: formData2,
+        datatype: "json",
         contentType: false,
         processData: false,
         // your ajax code

@@ -80,8 +80,8 @@
     }
 });
     $.ajax({
-              url: "{{route('deletePost')}}",
-              type: 'post',
+              url: "{{route('post.destroy',1)}}",
+              type: 'delete',
               data:  {"id":id},
               datatype: "json",
               success: function(response){

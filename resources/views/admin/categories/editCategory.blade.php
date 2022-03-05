@@ -51,6 +51,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery.ajaxsubmit@1.0.3/dist/jquery.ajaxsubmit.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script type="text/javascript">
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+</script>
 <script>
   $("#categoryForm").validate({
     rules: {
@@ -77,8 +84,8 @@
         // var formData = new FormData($("#exampleInputFile")[0]);
         var formData = new FormData(form);
          $.ajax({
-              url: "{{route('updateCategory',$data->id)}}",
-              type: 'post',
+              url: "{{route('category.update',$data->id)}}",
+              type: 'put',
               data: formData,
               contentType: false,
               processData: false,

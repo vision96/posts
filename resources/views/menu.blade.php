@@ -21,7 +21,7 @@
     </a>
     <ul class="nav nav-treeview">
       <li class="nav-item">
-        <a href="{{route('viewUsers')}}" class="nav-link">
+        <a href="{{route('user.index')}}" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
           <p>view Users</p>
         </a>
@@ -39,7 +39,7 @@
     </a>
     <ul class="nav nav-treeview">
       <li class="nav-item">
-        <a href="{{route('viewRoles')}}" class="nav-link">
+        <a href="" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
           <p>view Roles</p>
         </a>
@@ -57,13 +57,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{route('viewCategories')}}" class="nav-link">
+                <a href="{{route('category.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>view Categories</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{route('addCategory')}}" class="nav-link">
+                <a href="{{route('category.create')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Categories</p>
                 </a>
@@ -81,13 +81,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{route('viewPosts')}}" class="nav-link">
+                <a href="{{route('post.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>view Posts</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{route('addPost')}}" class="nav-link">
+                <a href="{{route('post.create')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Posts</p>
                 </a>
