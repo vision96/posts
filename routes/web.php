@@ -16,7 +16,6 @@ use App\Http\Controllers\Frontend\frontendController;
 Route::get('/home', [App\Http\Controllers\Frontend\frontendController::class, 'index'])->name('home');
 Auth::routes();
 Route::view('calender','calender');
-Route::view('welcome','welcome');
 
 //admin group
 Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){
