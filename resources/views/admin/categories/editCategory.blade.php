@@ -14,17 +14,18 @@
         <form id="categoryForm" class="form" action="" method="POST"
         enctype="multipart/form-data">
           @csrf
+          @method('PUT')
           <div class="card-body">
        <div class="form-group">
 
         <div class="form-group">
             <label for="exampleInput1">Name</label>
-            <input type="text" class="form-control" name="name"  id="exampleInput1" value="{{$data->name}}" placeholder="Enter name">
+            <input type="text" class="form-control" name="name"  id="exampleInput1" value="{{$category->name}}" placeholder="Enter name">
           </div>
 
           <div class="form-group">
             <label for="exampleInput2">Slug</label>
-            <input type="text" class="form-control" name="slug"  id="exampleInput2" value="{{$data->slug}}" placeholder="slug">
+            <input type="text" class="form-control" name="slug"  id="exampleInput2" value="{{$category->slug}}" placeholder="slug">
           </div>
 
 
@@ -58,10 +59,11 @@ $.ajaxSetup({
     }
 });
 </script>
+
 <script>
   $("#categoryForm").validate({
     rules: {
-        name: {
+       name: {
                 required: true,
             }, 
         slug: {
@@ -84,30 +86,30 @@ $.ajaxSetup({
         // var formData = new FormData($("#exampleInputFile")[0]);
         var formData = new FormData(form);
          $.ajax({
-              url: "{{route('category.update',$data->id)}}",
-              type: 'put',
+              url: "{{route('category.update',$category->id)}}",
+              type:'POST',
               data: formData,
               contentType: false,
               processData: false,
               success: function(response){
                  if(response != 0){
                   Swal.fire(
-                'success!',
+                  'success!',
                 'You updated this category!',
                 'success'
-)
+               ).then(function(){ 
+                            window.location.reload();
+                         });
              
-                 }else{
-                    alert('file not uploaded');
                  }
               },
 
               error:function(response){
                 if(response!=0){
                   Swal.fire(
-               'error!',
-               'cannot update this category',
-               'error'
+                    'error!',
+                    'cannot update this category',
+                   'error'
 )
                 }
               }

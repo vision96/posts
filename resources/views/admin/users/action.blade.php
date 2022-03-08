@@ -8,7 +8,7 @@ class="btn btn-outline-primary editbtn btn-min-width box-shadow-3 mr-1 mb-1" dat
 <i class="fas fa-edit"></i>
 </button> 
 
-<button onclick="deleted('{{$id}}')"  type="button"
+<button onclick="deleted('{{$id}}')"  type="button" id="userbtnId" data-url="{{route('user.destroy',$id)}}"
 class="btn btn-outline-danger btn-min-width box-shadow-3 mr-1 mb-1" data-toggle="tooltip" data-placement="top" title="delete user">
 <i class="fas fa-trash"></i>
 </button> 

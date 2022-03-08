@@ -11,19 +11,20 @@
         <!-- /.card-header -->
         <!-- form start -->
 
-        <form id="editPostForm" class="form" action="" method="put"
+        <form id="editPostForm" class="form" action="" method="POST"
         enctype="multipart/form-data">
           @csrf
+          @method('PUT')
           <div class="card-body">
 
           <div class="form-group">
             <label for="exampleInput1">Title</label>
-            <input type="text" class="form-control" name="title"  id="exampleInput1" value="{{$data->title}}" placeholder="Enter title">
+            <input type="text" class="form-control" name="title"  id="exampleInput1" value="{{$post->title}}" placeholder="Enter title">
           </div>
 
           <div class="form-group">
             <label>Body</label>
-            <textarea class="form-control" rows="3" name="body">{{$data->body}}</textarea>
+            <textarea class="form-control" rows="3" name="body">{{$post->body}}</textarea>
           </div> 
 
           <div class="row">
@@ -31,7 +32,7 @@
           <div class="col-sm-3">
                      
           <?php
-          $media = $data->getMedia('media');
+          $media = $post->getMedia('media');
           //dd($post);
           ?>
           
@@ -39,7 +40,7 @@
           {{$me}}
           @endforeach
 
-          <!-- <img class="img-fluid img-bordered" src="{{asset('image/'.$data->image)}}"> -->
+          <!-- <img class="img-fluid img-bordered" src="{{asset('image/'.$post->image)}}"> -->
           </div>
           <div class="col-sm-12 mt-2">
 
@@ -68,7 +69,7 @@
 
               <div class="form-check">      
               <input class="form-check-input" type="checkbox" name="category[]" id="inlineCheckbox{{$item->id}}" value="{{$item->id}}"
-              @foreach($data->categories as $dataItem)  @if ($dataItem->id == $item->id) checked @endif @endforeach>
+              @foreach($post->categories as $dataItem)  @if ($dataItem->id == $item->id) checked @endif @endforeach>
 
               <label class="form-check-label" for="inlineCheckbox{{$item->id}}">{{$item->name}}</label>
 
@@ -91,7 +92,8 @@
             <button type="submit" class="btn btn-primary">Submit</button>
             <!-- @can('delete_post') 
           @endcan-->
-            <button type="submit" onclick="publish();" class="btn btn-success">Publish</button>
+          <button type="button" onclick="publish();" class="btn btn-success">Publish</button>
+
             <!-- @if(auth()->user()->hasRole('Admin'))
             @endif   -->
           </div>
@@ -156,8 +158,8 @@ $.ajaxSetup({
         // var formData = new FormData($("#exampleInputFile")[0]);
         var formData = new FormData(form);
          $.ajax({
-              url:"{{route('post.update',1)}}"
-              type: 'put',
+              url:"{{route('post.update',$post->id)}}",
+              type:'POST',
               data: formData,
               contentType: false,
               processData: false,
@@ -171,8 +173,6 @@ $.ajaxSetup({
                             window.location.reload();
                          });
              
-                 }else{
-                    alert('file not uploaded');
                  }
               },
 
@@ -199,16 +199,25 @@ $.ajaxSetup({
     }
     });
     $.ajax({
-              url: "{{route('publishPost',$data->id)}}",
+              url: "{{route('publishPost',$post->id)}}",
               type: 'post',
+              statusCode: {
+                401: function() {
+                    Swal.fire({
+                        icon: 'info',
+                        html:
+                            'You do not have the <b>permission</b> to publish the post' ,
+                        showCloseButton: true,
+                        confirmButtonText: 'ok!',                    
+                        });
+                     }
+              },
               success: function(response){
-                 if(response != 0){
                   Swal.fire(
                 'success!',
                 'You published this post!',
                 'success'
                )
-                 }
               },
 
               error:function(response){

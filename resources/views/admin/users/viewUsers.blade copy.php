@@ -133,7 +133,6 @@
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <form action="" id="editform" method="POST" enctype="multipart/form-data">
         @csrf
-        @method('PUT')
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -198,7 +197,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="submit" class="button btn btn-primary" id="userbtnupdate" data-url="">
+              <button type="button" onclick="update();" class="button btn btn-primary" id="userbtnupdate" data-url="">
                 <i class="loading-icon fas fa-spinner hide"></i>
 
                 <span class="btn-txt">Edit user</span></button>
@@ -221,6 +220,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
   function deleted(id) {
+    var url = $("#userbtnId").data("url");
+    console.log(url);
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -238,7 +239,7 @@
           }
         });
         $.ajax({
-          url: "{{route('user.destroy',1)}}",
+          url: url,
           type: 'delete',
           data: {
             "id": id
@@ -306,7 +307,7 @@
       var formData = new FormData(form);
       $.ajax({
         url: "{{route('user.store')}}",
-        type: 'put',
+        type: 'post',
         data: formData,
         contentType: false,
         processData: false,
@@ -347,6 +348,7 @@
 
 <script>
   function edit(id) {
+    var url = $("#userbtnedit").data("url");
 
     $.ajaxSetup({
       headers: {
@@ -354,8 +356,9 @@
       }
     });
 
+
     $.ajax({
-      url: "{{route('user.edit',1)}}",
+      url: url,
       type: 'get',
       data: {
         "id": id
@@ -369,10 +372,9 @@
         $("#name").val(response.name);
         $("#email").val(response.email);
         $("#image").attr("src", '/image/' + response.image);
-        var url = '{{route("user.update",":id")}}';
-        url = url.replace(':id',response.id);
-        console.log(url);
-        $('#userbtnupdate').data('url',url);
+        // var url = '{{route("user.update",":id")}}';
+        // url = url.replace(':id',response.id);
+        // $('#userbtnupdate').data('url',url);
         $('#editModal').modal('show');
 
       },
@@ -391,93 +393,99 @@
 
   }
 
-
+ 
+ function update(){
+  var urll = $("#userbtnupdate").data("url");
+ console.log(urll);
   $("#editform").validate({
-    rules: {
-      name: {
-        required: true,
-      },
-      email: {
-        required: true,
-        email: true
-      },
-      password: {
-        required: true,
-        minlength: 5
-      },
-      image: {
-        required: false,
+
+rules: {
+  name: {
+    required: true,
+  },
+  email: {
+    required: true,
+    email: true
+  },
+  password: {
+    required: true,
+    minlength: 5
+  },
+  image: {
+    required: false,
+  }
+},
+highlight: function(element) {
+  $(element).addClass('is-invalid');
+},
+unhighlight: function(element) {
+  $(element).removeClass('is-invalid');
+},
+errorElement: 'span',
+errorClass: 'help-block',
+errorPlacement: function(error, element) {
+  error.addClass('invalid-feedback');
+  element.closest('.form-group').append(error);
+},
+submitHandler: function(form) {
+  // var formData = new FormData($("#exampleInputFile")[0]);
+  var formData2 = new FormData(form);
+
+  $.ajax({
+    url: urll,
+    type: 'post',
+    data: formData2,
+    datatype: "json",
+    contentType: false,
+    processData: false,
+    // your ajax code
+    beforeSend: function() {
+      $('.loading-icon').show();
+      $(".button").attr("disabled", true);
+      $(".btn-txt").text("updating");
+
+    },
+    complete: function() {
+      $('.loading-icon').hide();
+      $(".button").attr("disabled", false);
+      $(".btn-txt").text("Edit user");
+    },
+    success: function(response) {
+
+
+      if (response != 0) {
+        Swal.fire(
+          'success!',
+          'You updated a user!',
+          'success'
+        ).then(function() {
+          window.LaravelDataTables["admindatatable-table"].ajax.reload() //from browser (javascript content)
+        });
+        $('input').val("");
+        $('[name="_token"]').val("{{@csrf_token()}}");
+        $('#editModal').modal('hide');
+        $("#editform")[0].reset();
+
+      } else {
+        alert('file not uploaded');
       }
     },
-    highlight: function(element) {
-      $(element).addClass('is-invalid');
-    },
-    unhighlight: function(element) {
-      $(element).removeClass('is-invalid');
-    },
-    errorElement: 'span',
-    errorClass: 'help-block',
-    errorPlacement: function(error, element) {
-      error.addClass('invalid-feedback');
-      element.closest('.form-group').append(error);
-    },
-    submitHandler: function(form) {
-      // var formData = new FormData($("#exampleInputFile")[0]);
-      var formData2 = new FormData(form);
-      var urll = $("#userbtnupdate").data("url");
-      $.ajax({
-        url: urll,
-        type: 'POST',
-        data: formData2,
-        datatype: "json",
-        contentType: false,
-        processData: false,
-        // your ajax code
-        beforeSend: function() {
-          $('.loading-icon').show();
-          $(".button").attr("disabled", true);
-          $(".btn-txt").text("updating");
 
-        },
-        complete: function() {
-          $('.loading-icon').hide();
-          $(".button").attr("disabled", false);
-          $(".btn-txt").text("Edit user");
-        },
-        success: function(response) {
-
-
-          if (response != 0) {
-            Swal.fire(
-              'success!',
-              'You updated a user!',
-              'success'
-            ).then(function() {
-              window.LaravelDataTables["admindatatable-table"].ajax.reload() //from browser (javascript content)
-            });
-            $('input').val("");
-            $('[name="_token"]').val("{{@csrf_token()}}");
-            $('#editModal').modal('hide');
-            $("#editform")[0].reset();
-
-          } else {
-            alert('file not uploaded');
-          }
-        },
-
-        error: function(response) {
-          if (response != 0) {
-            Swal.fire(
-              'error!',
-              'cannot update a user',
-              'error'
-            )
-          }
-        }
-      });
-
+    error: function(response) {
+      if (response != 0) {
+        Swal.fire(
+          'error!',
+          'cannot update a user',
+          'error'
+        )
+      }
     }
   });
+
+}
+});
+ }
+ 
 </script>
 <script>
   $(function(){

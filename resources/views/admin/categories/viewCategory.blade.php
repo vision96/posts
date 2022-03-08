@@ -63,6 +63,7 @@
 <script>
 
  function deleted(id){
+  var url = $("#catbtnId").data('url')
   Swal.fire({
   title: 'Are you sure?',
   text: "You won't be able to revert this!",
@@ -80,7 +81,7 @@
     }
 });
     $.ajax({
-              url: "{{route('category.destroy',1)}}",
+              url: url,
               type: 'delete',
               data:  {"id":id},
               datatype: "json",

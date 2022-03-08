@@ -3,25 +3,49 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Models\category;
 use App\Models\PostCategory;
-use App\Models\Post;
-use DB;
 use Auth;
 use App\DataTables\postDatatable;
-
+use App\Http\Middleware\RoleCheck;
 class PostController extends Controller
 {
-    public function addPost()
+    // public function __construct()
+    // {
+    //     $this->middleware('role');
+    // }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(postDatatable $dtable)
+    {
+        return $dtable->render('admin.posts.viewPost');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
         $categories = category::get();
         return view('admin.posts.addPost', compact('categories'));
     }
 
-    public function storePost(Request $request)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
     {
-
         try {
             $request->validate([
                 'title' => 'required|max:100',
@@ -53,34 +77,40 @@ class PostController extends Controller
         }
     }
 
-
-    //view datatable
-    public function viewPosts(postDatatable $dtable)
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Post $post)
     {
-        return $dtable->render('admin.posts.viewPost');
+        //
     }
 
-    public function dataTable()
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Post $post)
     {
-        return datatables()->of(DB::table('posts'))->toJson();
-    }
-
-
-    public function editPost($id, Post $post)
-    {
-        $data = Post::find($id);
         $categories = category::get();
-        // $post_categories = PostCategory::where('post_id',$data->id)->get();
-        // foreach($post_categories as $item){
-        //     $categories = category::where('id',$item->category_id);
-        // }
-        return view('admin.posts.editPost', compact('data', 'categories'));
+        return view('admin.posts.editPost', compact('categories','post'));
     }
 
-    public function updatePost(request $request, $id)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Post $post)
     {
         try {
-            $data = Post::findOrFail($id);
+            //$data = Post::findOrFail($id);
 
             $request->validate([
                 'title' => 'required|max:100',
@@ -92,23 +122,23 @@ class PostController extends Controller
             if ($request->has('image')) {
                 
             //delete old media
-            if($data->getMedia('media') != ''){
-                $data->clearMediaCollection('media');
+            if($post->getMedia('media') != ''){
+                $post->clearMediaCollection('media');
            }
 
-                $data->addMedia($request->image)->toMediaCollection('media');
+                $post->addMedia($request->image)->toMediaCollection('media');
             }
 
+            if($request->category != ""){
             foreach ($request->category as $key => $val) {
                 PostCategory::create([
-                    'post_id' => $data->id,
+                    'post_id' => $post->id,
                     'category_id' => $val,
                 ]);
             }
+            }
 
-            $data->title = $request->title;
-            $data->body = $request->body;
-            $data->save();
+            $post->update($request->only($post->fillable));
 
             return response()->json(['success' => 'تم التحديث بنجاح']);
         } catch (\exception $ex) {
@@ -116,24 +146,30 @@ class PostController extends Controller
         }
     }
 
-
-    public function deletePost(request $request)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Post $post)
     {
-        try {
-              $data = Post::find($request->id);
-              //delete media first
-              if($data->getMedia('media') != ''){
-                $data->clearMediaCollection('media');
-           }
-            $data->delete();
-            return response()->json(['success' => 'تم الحذف بنجاح']);
-        } catch (\exception $ex) {
-            return response()->json(['error' => 'هناك خطا ما يرجى المحاولة لاحقا']);
-        }
+       try {
+           //dd($post);
+           // delete media first
+            if($post->getMedia('media') != ''){
+              $post->clearMediaCollection('media');
+         }
+          $post->delete();
+          return response()->json(['success' => 'تم الحذف بنجاح']);
+      } catch (\exception $ex) {
+          return response()->json(['error' => 'هناك خطا ما يرجى المحاولة لاحقا']);
+      }
     }
 
-    public function publishPost($id)
+    
+    public function publishPost(Post $post)
     {
-        $post = Post::findOrFail($id)->update(['publish_status' => 1]);
+        $post->update(['publish_status' => 1]);
     }
 }

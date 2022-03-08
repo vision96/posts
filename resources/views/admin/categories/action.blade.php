@@ -3,7 +3,7 @@
     <i class="fas fa-edit"></i>
 </a>
 
-<button onclick="deleted('{{$id}}')" type="button"
+<button onclick="deleted('{{$id}}')" type="button" id="catbtnId" data-url="{{route('category.destroy',$id)}}"
 class="btn btn-outline-danger btn-min-width box-shadow-3 mr-1 mb-1" data-toggle="tooltip" data-placement="top" title="delete">
 <i class="fas fa-trash"></i>
 </button> 

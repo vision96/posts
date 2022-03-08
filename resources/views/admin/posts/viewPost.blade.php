@@ -63,6 +63,8 @@
 <script>
 
  function deleted(id){
+  var url = $("#btnId").data("url"); 
+  console.log(url);
   Swal.fire({
   title: 'Are you sure?',
   text: "You won't be able to revert this!",
@@ -80,10 +82,21 @@
     }
 });
     $.ajax({
-              url: "{{route('post.destroy',1)}}",
+              url: url,
               type: 'delete',
               data:  {"id":id},
               datatype: "json",
+              statusCode: {
+                401: function() {
+                    Swal.fire({
+                        icon: 'info',
+                        html:
+                            'You do not have the <b>permission</b> to delete the post' ,
+                        showCloseButton: true,
+                        confirmButtonText: 'ok!',                    
+                        });
+                     }
+              },
               success: function(response){
                 Swal.fire(
                'Deleted!',
@@ -98,9 +111,9 @@
                 if(response!=0){
                   Swal.fire(
                'error!',
-               'cannot delete this product',
+               'cannot delete this post',
                'error'
-)
+                )
                 }
               }
            });
@@ -108,8 +121,8 @@
   }
 })
  } 
-
 </script>
+
 {!!$dataTable->scripts()!!}
 @endsection
 

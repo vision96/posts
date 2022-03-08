@@ -54,6 +54,14 @@ class User extends Authenticatable
         return $this->hasMany(Post::class,'user_id','id');
     }
 
+    public function isAdmin()
+    {
+        if ($this->roles->contains('name', 'Admin')) {
+            return true;
+        }
+        return false;
+    }
+
    public function hasRole($roleName) {
     return $this->roles->contains('name', $roleName);
 }

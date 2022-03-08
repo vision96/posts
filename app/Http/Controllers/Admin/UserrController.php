@@ -99,11 +99,11 @@ class UserrController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, User $user)
     {
-        dd($request->all());
+       // dd($user);
         //try{
-            $users = User::findOrFail($request->id);
+            // $users = User::findOrFail($request->id);
             
             $request->validate([
                 'name'=>'required|max:100',
@@ -116,18 +116,18 @@ class UserrController extends Controller
             $imageName = time().'.'.$request->image->extension();
             $request->image->move(public_path('image'),$imageName);
  
-            if($users->image != null){
-            if(file_exists(public_path('image/'.$users->image))){
-                unlink(public_path('image/'.$users->image));
+            if($user->image != null){
+            if(file_exists(public_path('image/'.$user->image))){
+                unlink(public_path('image/'.$user->image));
             }
             }
-            $users->image = $imageName;
+            $user->image = $imageName;
          }
      
-         $users->name = $request->name;
-         $users->email = $request->email;
-         $users->password = Hash::make($request->password);
-         $users->save();
+         $user->name = $request->name;
+         $user->email = $request->email;
+         $user->password = Hash::make($request->password);
+         $user->save();
      
          return response()->json(['success'=>'تم التحديث بنجاح']);
     //  }
