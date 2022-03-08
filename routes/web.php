@@ -16,6 +16,7 @@ use App\Http\Controllers\Frontend\frontendController;
 Route::get('/home', [App\Http\Controllers\Frontend\frontendController::class, 'index'])->name('home');
 Auth::routes();
 Route::view('calender','calender');
+Route::view('welcome','welcome');
 
 //admin group
 Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){
@@ -41,6 +42,5 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){
         Route::get('/singleUser/{id}', [App\Http\Controllers\Admin\UserrController::class, 'singleUser'])->name('singleUser');
         Route::get('/DeleteUserRole/{id}', [App\Http\Controllers\Admin\UserrController::class, 'DeleteUserRole'])->name('DeleteUserRole');
         
-        // ->middleware('role:Admin,Writer')
 });
 

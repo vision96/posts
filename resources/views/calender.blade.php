@@ -77,95 +77,50 @@ td{
   <th style="background-color:#0000FF;">Saturday</th>
   </tr>
   <tr>
-    <td class="not_active"></td>
-    <td class="not_active"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="active_day blue"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
   </tr>
   <tr>
-    <td class="active_day red"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="active_day blue"></td>
+  <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
   </tr>
   <tr>
-    <td class="active_day red"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="active_day blue"></td>
+  <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
   </tr>
   <tr>
-    <td class="active_day red"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="active_day blue"></td>
+  <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
   </tr>
   <tr>
-    <td class="active_day red"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="active_day"></td>
-    <td class="not_active"></td>
-    <td class="not_active"></td>
+  <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
   </tr>
-  <!-- <tr>
-    <td class="not_active">27</td>
-    <td class="not_active">28</td>
-    <td class="active_day">1</td>
-    <td class="active_day">2</td>
-    <td class="active_day">3</td>
-    <td class="active_day">4</td>
-    <td class="active_day blue">5</td>
-  </tr>
-  <tr>
-    <td class="active_day red">6</td>
-    <td class="active_day">7</td>
-    <td class="active_day">8</td>
-    <td class="active_day">9</td>
-    <td class="active_day">10</td>
-    <td class="active_day">11</td>
-    <td class="active_day blue">12</td>
-  </tr>
-  <tr>
-    <td class="active_day red">13</td>
-    <td class="active_day">14</td>
-    <td class="active_day">15</td>
-    <td class="active_day">16</td>
-    <td class="active_day">17</td>
-    <td class="active_day">18</td>
-    <td class="active_day blue">19</td>
-  </tr>
-  <tr>
-    <td class="active_day red">20</td>
-    <td class="active_day">21</td>
-    <td class="active_day">22</td>
-    <td class="active_day">23</td>
-    <td class="active_day">24</td>
-    <td class="active_day">25</td>
-    <td class="active_day blue">26</td>
-  </tr>
-  <tr>
-    <td class="active_day red">27</td>
-    <td class="active_day">28</td>
-    <td class="active_day">29</td>
-    <td class="active_day">30</td>
-    <td class="active_day">31</td>
-    <td class="not_active">1</td>
-    <td class="not_active">2</td>
-  </tr> -->
 </table>
 </div>
 
@@ -180,36 +135,39 @@ document.getElementById("month").innerHTML = name;
 let day = date.getUTCDate();
 
 //compare day with td value
-//let tdContent = document.getElementsByTagName("td")[0].textContent; //first element //27
 
-var table = document.getElementById("myTable");
- 	//iterate trough rows
-    for (var i = 1, row; row = table.rows[i]; i++) {
- 	//iterate trough columns
-        for (var j = 0, col; col = row.cells[j]; j++) {
-            if(col.textContent == day){
-                col.classList.add("today");
-              }
-           }
-        }
-   
+ var table = document.getElementById("myTable");
  var monthh = date.getMonth()+1;
  var year = date.getFullYear();
  var daysInMonth = new Date(year, monthh, 0).getDate();
 
 console.log(daysInMonth);
-
+var n=0;
  for (var i = 1, row; row = table.rows[i]; i++) {
  	//iterate trough columns
+   var l=1;
         for (var j = 0, col; col = row.cells[j]; j++) {
-            for (let k = 1; k <= daysInMonth; k++) {
-                console.log(k);
-                 //col.innerHTML = k;
-                 table.rows[i].cells[j].innerHTML = k++;
-              }
-           }
-        }
 
+          k=l+j+(7*n);
+
+          if (k > daysInMonth) {break;}
+             
+                 table.rows[i].cells[j].innerHTML = k;
+                 table.rows[i].cells[j].classList.add("active_day");
+                 table.rows[i].cells[6].classList.add("blue");
+
+          if (i != 1) {
+            table.rows[i].cells[0].classList.add("red");
+            }
+
+          if(col.textContent == day){
+                col.classList.add("today");
+              }
+          
+        }
+           n++;
+           l++;
+   }
 
 </script>
 
