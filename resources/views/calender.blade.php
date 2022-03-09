@@ -113,7 +113,7 @@ td{
     <td></td>
   </tr>
   <tr>
-  <td></td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -125,39 +125,75 @@ td{
 </div>
 
 <script>
+//get this year  
 const date = new Date();
 document.getElementById("year").innerHTML = date.getFullYear();
 
+var monthh = date.getMonth();
+var year = date.getFullYear();
+// get the first and last date of the month.
+var FirstDay = new Date(year, monthh, 1);
+var LastDay = new Date(year, monthh + 1, 0);
+
+//get first day of this month
+const daysOfWeek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+let dayName = daysOfWeek[FirstDay.getDay()];
+console.log(dayName);
+
+//get this month name
 const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-let name = month[date.getMonth()];
-document.getElementById("month").innerHTML = name;
+let monthName = month[date.getMonth()];
+document.getElementById("month").innerHTML = monthName;
 
 let day = date.getUTCDate();
 
-//compare day with td value
+var table = document.getElementById("myTable");
 
- var table = document.getElementById("myTable");
- var monthh = date.getMonth()+1;
- var year = date.getFullYear();
- var daysInMonth = new Date(year, monthh, 0).getDate();
+ //get number of the days in this month
+var month1 = date.getMonth()+1;
+var daysInMonth = new Date(year, month1, 0).getDate();
 
 console.log(daysInMonth);
+console.log(daysOfWeek.indexOf(dayName));
+dayNameIndex = daysOfWeek.indexOf(dayName);
+
+var perviousMonth = date.getMonth();
+var daysInPrevMonth = new Date(year, perviousMonth, 0).getDate();
+console.log(daysInPrevMonth);
+
+
 var n=0;
+var start = dayNameIndex;
+var a1 = 1;
+var minusValue = start -1;
+var a2 = daysInPrevMonth-minusValue;
  for (var i = 1, row; row = table.rows[i]; i++) {
  	//iterate trough columns
    var l=1;
         for (var j = 0, col; col = row.cells[j]; j++) {
 
           k=l+j+(7*n);
-
-          if (k > daysInMonth) {break;}
-             
+          k=k-start;
+          if (k <= 0) {
+            table.rows[i].cells[j].innerHTML = a2;
+            a2++;
+            table.rows[i].cells[j].classList.add("not_active");
+            continue;
+          }
+          if (k>daysInMonth) {
+            table.rows[i].cells[j].innerHTML = a1;
+            a1++;
+            table.rows[i].cells[j].classList.add("not_active");
+            continue;
+            }
                  table.rows[i].cells[j].innerHTML = k;
                  table.rows[i].cells[j].classList.add("active_day");
-                 table.rows[i].cells[6].classList.add("blue");
 
           if (i != 1) {
             table.rows[i].cells[0].classList.add("red");
+            }
+          if (i != 5) {
+            table.rows[i].cells[6].classList.add("blue");
             }
 
           if(col.textContent == day){
@@ -168,6 +204,7 @@ var n=0;
            n++;
            l++;
    }
+
 
 </script>
 
